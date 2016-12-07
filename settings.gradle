@@ -1,0 +1,4 @@
+rootProject.name = 'kopper.kt'
+
+include 'kopper'
+include 'kopper-cli'

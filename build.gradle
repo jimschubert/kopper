@@ -1,0 +1,32 @@
+buildscript {
+    ext.kotlin_version = '1.0.5-2'
+    ext.kotlin_version = "$kotlinVersion"
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+configurations.all {
+    resolutionStrategy.failOnVersionConflict()
+}
+
+allprojects {
+    apply plugin: 'idea'
+
+    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+    repositories {
+        jcenter()
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
+}
+
+version = "${version}.$buildNumber"

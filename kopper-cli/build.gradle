@@ -1,0 +1,29 @@
+apply plugin: 'kotlin'
+apply plugin: 'java'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+dependencies {
+    compile project(':kopper')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+
+    // Declare the dependency for your favourite test framework you want to use in your tests.
+    // TestNG is also supported by the Gradle Test task. Just change the
+    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
+    // 'test.useTestNG()' to your build script.
+
+    testCompile 'org.testng:testng:6.8.1',
+            "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+
+}
+
+test {
+    useTestNG()
+    testClassesDir = project.tasks.compileTestKotlin.destinationDir
+    testLogging.showStandardStreams = true
+}
+
