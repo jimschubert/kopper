@@ -50,3 +50,7 @@ class ExampleArgs(args: Array<String>) : TypedArgumentParser(args) {
     val maxCount by NumericArgument(self, "m", longOption = listOf("maxCount"), default = 10, description = "Max Count")
 }
 ```
+
+# License
+
+[MIT License](./LICENSE)
