@@ -50,7 +50,7 @@ class Parser() {
 
     fun get(option: String): String? {
         val found = options.find { !it.isFlag && (it.shortOption == option || it.longOption.contains(option)) }
-        return found?.actual as? String?
+        return (found?.actual ?: found?.default) as? String?
     }
 
     fun isSet(option: String): Boolean {
@@ -58,7 +58,7 @@ class Parser() {
             it.isFlag && (it.shortOption == option || it.longOption.contains(option))
         } as? BooleanOption ?: return false
 
-        return found.actual?:false
+        return (found.actual ?: found.default) ?:false
     }
 
     fun printHelp(): String {
