@@ -45,11 +45,21 @@ class ExampleArgs(args: Array<String>) : TypedArgumentParser(args) {
             description = "Run quietly"
     )
 
-    val rate by NumericArgument(self, "r", default = 1.0f, description = "Rate")
+    val rate by NumericArgument(self, "r", 
+            default = 1.0f, 
+            description = "Rate"
+    )
 
-    val maxCount by NumericArgument(self, "m", longOption = listOf("maxCount"), default = 10, description = "Max Count")
+    val maxCount by NumericArgument(self, "m", 
+            longOption = listOf("maxCount"), 
+            default = 10, 
+            description = "Max Count"
+    )
 }
 ```
+
+Typed parser objects support `BooleanArgument`, `StringArgument`, and `NumericArgument<T>` property delegates. They 
+also expose any additional args as a list of strings in the `_etc_` property.
 
 # License
 

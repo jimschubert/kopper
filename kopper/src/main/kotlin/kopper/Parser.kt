@@ -1,6 +1,6 @@
 package kopper
 
-class Parser() {
+class Parser {
     private var options: MutableList<Option<*>> = mutableListOf()
     private var _args: MutableList<String> = mutableListOf()
 
@@ -19,8 +19,12 @@ class Parser() {
     fun flag(shortOption: String,
                longOption: List<String> = listOf(),
                description: String? = null,
-               default: Boolean? = false) {
+               default: Boolean? = true) {
         options.add(BooleanOption(shortOption, longOption, description, default))
+    }
+
+    fun <T> custom(option: Option<T>) {
+        options.add(option)
     }
 
     fun parse(args: Array<String>) {
@@ -31,16 +35,18 @@ class Parser() {
             if(s.startsWith("--")) {
                 val (left,right) = s.removePrefix("--").kvp()
                 val option = options.find { it.longOption.contains(left) }
-                if(false == option?.isFlag) option?.applyParsedOption(right)
-                else option?.applyParsedOption(right?:"true")
+                if(false == option?.isFlag)
+                    option?.applyParsedOption(right)
+                else
+                    option?.applyParsedOption(right)
             } else if (s.startsWith("-")) {
                 val next = if(argIndex < (args.size-1)) args[argIndex+1] else null
                 val option = options.find { it.shortOption == s.removePrefix("-")}
-                if(option != null && false == next?.startsWith("-")) {
+                if(true == option?.isFlag) {
+                    option?.applyParsedOption(null)
+                } else if(option != null && false == next?.startsWith("-")) {
                     option.applyParsedOption(next)
                     argIndex++
-                } else if(true == option?.isFlag) {
-                    option?.applyParsedOption("true")
                 }
             } else _args.add(s)
 
@@ -49,8 +55,8 @@ class Parser() {
     }
 
     fun get(option: String): String? {
-        val found = options.find { !it.isFlag && (it.shortOption == option || it.longOption.contains(option)) }
-        return (found?.actual ?: found?.default) as? String?
+        val found = options.find { (it.shortOption == option || it.longOption.contains(option)) }
+        return found?.actual as? String?
     }
 
     fun isSet(option: String): Boolean {
@@ -58,7 +64,7 @@ class Parser() {
             it.isFlag && (it.shortOption == option || it.longOption.contains(option))
         } as? BooleanOption ?: return false
 
-        return (found.actual ?: found.default) ?:false
+        return found.actual ?: false
     }
 
     fun printHelp(): String {

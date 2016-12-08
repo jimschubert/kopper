@@ -8,7 +8,8 @@ class NumericArgument<out T>(
         val shortOption: String,
         val default: T? = null,
         val longOption: List<String> = listOf(),
-        val description: String? = null): ReadOnlyProperty<TypedArgumentParser, T?> {
+        val description: String? = null
+): ReadOnlyProperty<TypedArgumentParser, T?> {
 
     init {
         caller.parser.option(shortOption, longOption, description, default = null)

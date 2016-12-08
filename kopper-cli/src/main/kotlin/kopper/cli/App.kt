@@ -10,10 +10,14 @@ fun main(args: Array<String>) {
     parser.flag("q", listOf("quiet", "silent"), description = "Run silently")
     parser.option("f", listOf("file"), description = "File name")
     parser.flag("a", listOf("allowEmpty"))
-
-    println(parser.printHelp())
+    parser.flag("h", listOf("help"), description = "Displays this message")
 
     parser.parse(arrayOf("-f", "asdf.txt", "--quiet=true", "trailing", "arguments" ))
+
+    if(parser.isSet("h")) {
+        println(parser.printHelp())
+        return
+    }
 
     println("q=${parser.isSet("q")}")
     println("quiet=${parser.isSet("quiet")}")

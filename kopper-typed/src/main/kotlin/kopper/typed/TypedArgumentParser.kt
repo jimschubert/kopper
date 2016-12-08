@@ -4,7 +4,7 @@ import kopper.Parser
 
 abstract class TypedArgumentParser(val args: Array<String>) {
     private var hasParsed = false
-    internal val self: TypedArgumentParser by lazy { this }
+    val self: TypedArgumentParser by lazy { this }
     internal val parser = Parser()
     internal fun ensureParsed() {
         if(!hasParsed) {
@@ -12,4 +12,10 @@ abstract class TypedArgumentParser(val args: Array<String>) {
             hasParsed = true
         }
     }
+
+    fun printHelp() : String {
+        return parser.printHelp()
+    }
+
+    val _etc_ get() = parser.remainingArgs
 }

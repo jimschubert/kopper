@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 class BooleanArgument(
         caller: TypedArgumentParser,
         val shortOption: String,
-        val default: Boolean = false,
+        val default: Boolean = true,
         val longOption: List<String> = listOf(),
         val description: String? = null
 ): ReadOnlyProperty<TypedArgumentParser, Boolean> {

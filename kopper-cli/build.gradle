@@ -8,6 +8,7 @@ compileJava {
 
 dependencies {
     compile project(':kopper')
+    compile project(':kopper-typed')
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
 

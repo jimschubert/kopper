@@ -41,7 +41,7 @@ abstract class Option<T>(
 
     @Suppress("UNCHECKED_CAST")
     open fun parseOption(value: String?): T? {
-        return value as? T?
+        return (value as? T?) ?: default
     }
 
     internal fun applyParsedOption(value: String?): Unit {
@@ -67,7 +67,7 @@ class BooleanOption(
         override val shortOption: String,
         override val longOption: List<String> = listOf(),
         override val description: String? = null,
-        override val default: Boolean? = false,
+        override val default: Boolean? = true,
         override val parameterText: String? = null) : Option<Boolean>(
         shortOption,
         longOption,
@@ -77,6 +77,6 @@ class BooleanOption(
         true
 ) {
     override fun parseOption(value: String?): Boolean? {
-        return value?.toBoolean()
+        return value?.toBoolean() ?: default
     }
 }
