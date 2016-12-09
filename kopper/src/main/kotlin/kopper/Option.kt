@@ -47,6 +47,10 @@ abstract class Option<T>(
     internal fun applyParsedOption(value: String?): Unit {
         actual = parseOption(value)
     }
+
+    internal fun setAsDefault() {
+        this.actual = this.default
+    }
 }
 
 class StringOption(

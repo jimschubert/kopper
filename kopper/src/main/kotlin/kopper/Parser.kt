@@ -42,11 +42,11 @@ class Parser {
             } else if (s.startsWith("-")) {
                 val next = if(argIndex < (args.size-1)) args[argIndex+1] else null
                 val option = options.find { it.shortOption == s.removePrefix("-")}
-                if(true == option?.isFlag) {
-                    option?.applyParsedOption(null)
-                } else if(option != null && false == next?.startsWith("-")) {
-                    option.applyParsedOption(next)
+                if(false == next?.startsWith("-")) {
+                    option?.applyParsedOption(next)
                     argIndex++
+                } else if (option != null) {
+                    option?.setAsDefault()
                 }
             } else _args.add(s)
 
