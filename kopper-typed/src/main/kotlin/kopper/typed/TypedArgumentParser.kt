@@ -17,5 +17,5 @@ abstract class TypedArgumentParser(val args: Array<String>) {
         return parser.printHelp()
     }
 
-    val _etc_ get() = parser.remainingArgs
+    val _etc_: List<String> get() = parser.remainingArgs
 }
