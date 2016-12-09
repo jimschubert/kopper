@@ -1,6 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.0.5-2'
     ext.kotlin_version = "$kotlinVersion"
+    ext.dokka_version = "0.9.10"
 
     repositories {
         jcenter()
@@ -8,6 +9,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
     }
 }
 
@@ -17,7 +19,9 @@ configurations.all {
 
 allprojects {
     apply plugin: 'idea'
-    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
+    apply plugin: 'org.jetbrains.dokka'
+    apply plugin: 'signing'
 
     tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
@@ -30,4 +34,4 @@ task wrapper(type: Wrapper) {
     gradleVersion = '3.2'
 }
 
-version = "${version}.$buildNumber"
+version = "${version}"

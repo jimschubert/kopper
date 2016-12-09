@@ -1,5 +1,10 @@
 apply plugin: 'kotlin'
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'us.jimschubert.kopper.cli.TypedAppKt'
+
+defaultTasks 'run'
 
 compileJava {
     sourceCompatibility = 1.8

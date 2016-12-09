@@ -32,60 +32,75 @@ test {
     }
 }
 
-// TODO: Move to base and exclude kotlin-cli http://stackoverflow.com/questions/21433251/gradle-plugin-maven-publish-how-to-publish-only-specific-publication-to-a-rep
-publishing {
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+task sourcesJar(type: Jar) {
+    from project.sourceSets.main.allSource
+    classifier "sources"
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/javadoc"
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    classifier 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
     repositories {
-        maven {
-            name 'SonatypeStaging'
-            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            credentials {
-                username "$ossrhUsername"
-                password "$ossrhPassword"
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
-        }
-        maven {
-            name 'SonatypeReleases'
-            url "https://oss.sonatype.org/content/groups/public"
-            credentials {
-                username "$ossrhUsername"
-                password "$ossrhPassword"
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
-        }
-        maven {
-            name 'SonatypeSnapshots'
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-            credentials {
-                username "$ossrhUsername"
-                password "$ossrhPassword"
-            }
-        }
-    }
-    publications {
-        maven(MavenPublication) {
-            groupId "$groupId"
-            version "$version-$buildNumber"
 
-            from components.java
+            pom.project {
+                name 'Kopper Typed'
+                packaging 'jar'
+                description 'Kotlin option parser (typed)'
+                url 'https://github.com/jimschubert/kopper'
 
-            pom.withXml { xmlProvider ->
-                def project = xmlProvider.asNode()
+                scm {
+                    connection 'git@github.com:jimschubert/kopper.git'
+                    developerConnection 'scm:git:git@github.com:jimschubert/kopper.git'
+                    url 'https://github.com/jimschubert/kopper'
+                }
 
-                project.appendNode('name', 'Kopper Typed')
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://github.com/jimschubert/kopper/blob/master/LICENSE'
+                    }
+                }
 
-                project.appendNode('description', 'Kotlin option parser')
-
-                project.appendNode('url', 'https://github.com/jimschubert/kopper')
-
-                def developers = project.appendNode('developers')
-                def developer = developers.appendNode('developer')
-                developer.appendNode('id', 'jimschubert')
-                developer.appendNode('name', 'Jim Schubert')
-                developer.appendNode('email', 'james.schubert@gmail.com')
-
-                def licenses = project.appendNode('licenses')
-                def license = licenses.appendNode('license')
-                license.appendNode('name', 'MIT')
-                license.appendNode('url', 'https://github.com/jimschubert/kopper/blob/master/LICENSE')
+                developers {
+                    developer {
+                        id 'jimschubert'
+                        name 'Jim Schubert'
+                        email 'james.schubert@gmail.com'
+                    }
+                }
             }
         }
     }
