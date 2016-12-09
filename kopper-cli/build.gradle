@@ -27,4 +27,3 @@ test {
     testClassesDir = project.tasks.compileTestKotlin.destinationDir
     testLogging.showStandardStreams = true
 }
-

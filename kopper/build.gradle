@@ -32,12 +32,61 @@ test {
     }
 }
 
+// TODO: Move to base and exclude kotlin-cli http://stackoverflow.com/questions/21433251/gradle-plugin-maven-publish-how-to-publish-only-specific-publication-to-a-rep
 publishing {
+    repositories {
+        maven {
+            name 'SonatypeStaging'
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username "$ossrhUsername"
+                password "$ossrhPassword"
+            }
+        }
+        maven {
+            name 'SonatypeReleases'
+            url "https://oss.sonatype.org/content/groups/public"
+            credentials {
+                username "$ossrhUsername"
+                password "$ossrhPassword"
+            }
+        }
+        maven {
+            name 'SonatypeSnapshots'
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+            credentials {
+                username "$ossrhUsername"
+                password "$ossrhPassword"
+            }
+        }
+    }
     publications {
         maven(MavenPublication) {
             groupId "$groupId"
+            version "$version-$buildNumber"
 
             from components.java
+
+            pom.withXml { xmlProvider ->
+                def project = xmlProvider.asNode()
+
+                project.appendNode('name', 'Kopper Typed')
+
+                project.appendNode('description', 'Kotlin option parser')
+
+                project.appendNode('url', 'https://github.com/jimschubert/kopper')
+
+                def developers = project.appendNode('developers')
+                def developer = developers.appendNode('developer')
+                developer.appendNode('id', 'jimschubert')
+                developer.appendNode('name', 'Jim Schubert')
+                developer.appendNode('email', 'james.schubert@gmail.com')
+
+                def licenses = project.appendNode('licenses')
+                def license = licenses.appendNode('license')
+                license.appendNode('name', 'MIT')
+                license.appendNode('url', 'https://github.com/jimschubert/kopper/blob/master/LICENSE')
+            }
         }
     }
 }
