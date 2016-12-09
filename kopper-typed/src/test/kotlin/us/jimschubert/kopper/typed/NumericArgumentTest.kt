@@ -1,4 +1,4 @@
-package kopper.typed
+package us.jimschubert.kopper.typed
 
 import org.testng.annotations.Test
 

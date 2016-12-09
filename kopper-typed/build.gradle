@@ -33,3 +33,13 @@ test {
         }
     }
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId "$groupId"
+
+            from components.java
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package kopper
+package us.jimschubert.kopper
 
 fun String.kvp(): Pair<String,String?> {
     val idx = indexOfFirst { it == '=' }

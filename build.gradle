@@ -17,6 +17,7 @@ configurations.all {
 
 allprojects {
     apply plugin: 'idea'
+    apply plugin: 'maven-publish'
 
     tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 

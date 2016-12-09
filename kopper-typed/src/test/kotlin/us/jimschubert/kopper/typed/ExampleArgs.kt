@@ -1,4 +1,4 @@
-package kopper.typed
+package us.jimschubert.kopper.typed
 
 class ExampleArgs(args: Array<String>) : TypedArgumentParser(args) {
 

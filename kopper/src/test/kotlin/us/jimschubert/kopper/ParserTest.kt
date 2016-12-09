@@ -1,4 +1,4 @@
-package kopper
+package us.jimschubert.kopper
 
 import org.testng.annotations.Test
 

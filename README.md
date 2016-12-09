@@ -7,9 +7,7 @@ A simple Kotlin option parser
 Manual parsing…
 
 ```kotlin
-package kopper.cli
-
-import kopper.*
+import us.jimschubert.kopper.*
 
 fun main(args: Array<String>) {
     val parser = Parser()

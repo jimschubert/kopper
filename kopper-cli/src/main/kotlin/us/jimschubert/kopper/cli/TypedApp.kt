@@ -1,8 +1,8 @@
-package kopper.cli
+package us.jimschubert.kopper.cli
 
-import kopper.typed.BooleanArgument
-import kopper.typed.StringArgument
-import kopper.typed.TypedArgumentParser
+import us.jimschubert.kopper.typed.BooleanArgument
+import us.jimschubert.kopper.typed.StringArgument
+import us.jimschubert.kopper.typed.TypedArgumentParser
 
 fun main(args: Array<String>) {
     val arguments = TypedArgs(

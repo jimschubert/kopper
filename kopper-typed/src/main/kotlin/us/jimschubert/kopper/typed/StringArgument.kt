@@ -1,6 +1,6 @@
-package kopper.typed
+package us.jimschubert.kopper.typed
 
-import kopper.StringOption
+import us.jimschubert.kopper.StringOption
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

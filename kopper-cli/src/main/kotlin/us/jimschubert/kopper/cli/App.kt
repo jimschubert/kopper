@@ -1,6 +1,6 @@
-package kopper.cli
+package us.jimschubert.kopper.cli
 
-import kopper.*
+import us.jimschubert.kopper.*
 
 fun main(args: Array<String>) {
     val parser = Parser()

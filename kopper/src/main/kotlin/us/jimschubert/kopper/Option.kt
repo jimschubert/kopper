@@ -1,4 +1,4 @@
-package kopper
+package us.jimschubert.kopper
 
 abstract class Option<T>(
         open val shortOption: String,

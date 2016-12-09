@@ -1,4 +1,4 @@
-package kopper
+package us.jimschubert.kopper
 
 fun Appendable.tab(): Appendable {
     append('\t')

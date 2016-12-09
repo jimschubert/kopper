@@ -1,4 +1,4 @@
-package kopper
+package us.jimschubert.kopper
 
 class Parser {
     private var options: MutableList<Option<*>> = mutableListOf()

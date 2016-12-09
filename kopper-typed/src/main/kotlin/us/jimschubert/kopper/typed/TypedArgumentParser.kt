@@ -1,6 +1,6 @@
-package kopper.typed
+package us.jimschubert.kopper.typed
 
-import kopper.Parser
+import us.jimschubert.kopper.Parser
 
 abstract class TypedArgumentParser(val args: Array<String>) {
     private var hasParsed = false
