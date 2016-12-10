@@ -3,7 +3,7 @@ image: java:8-jdk
 stages:
   - build
   - test
-#  - deploy
+  - deploy
 
 before_script:
 #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
@@ -30,10 +30,11 @@ test:
   script:
     - ./gradlew check
 
-#deploy:
-#  stage: deploy
-#  script:
-#    - ./deploy
+deploy:
+  stage: deploy
+  script:
+    - ./gradlew kopper:uploadArchives
+    - ./gradlew kopper-typed:uploadArchives
 
 after_script:
   - echo "End CI"

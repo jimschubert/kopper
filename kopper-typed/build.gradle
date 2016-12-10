@@ -1,12 +1,3 @@
-apply plugin: 'kotlin'
-apply plugin: 'java'
-apply plugin: 'signing'
-
-compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
-
 dependencies {
     compile project(':kopper')
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
