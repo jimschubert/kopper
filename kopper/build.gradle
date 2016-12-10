@@ -76,9 +76,9 @@ uploadArchives {
             }
 
             pom.project {
-                name 'Kopper Typed'
+                name 'Kopper'
                 packaging 'jar'
-                description 'Kotlin option parser (typed)'
+                description 'Kotlin option parser'
                 url 'https://github.com/jimschubert/kopper'
 
                 scm {

@@ -2,7 +2,15 @@
 
 A simple Kotlin option parser
 
-# Example
+[![Maven Central](https://img.shields.io/maven-central/v/us.jimschubert/kopper.svg?label=maven:%20kopper)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kopper%22)
+
+[![Maven Central](https://img.shields.io/maven-central/v/us.jimschubert/kopper-typed.svg?label=maven:%20kopper-typed)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kopper-typed%22)
+
+`kopper` is the simple Kotlin option parser library.
+
+`kopper-typed` extends the kopper library to support delegated properties and parsing as simple as constructing an object. It includes the additional dependency of `kotlin-reflect`.
+
+# Examples
 
 Manual parsing…
 
@@ -35,6 +43,19 @@ fun main(args: Array<String>) {
 Parser objects…
 
 ```kotlin
+fun main(args: Array<String>) {
+    val arguments = ExampleArgs(args)
+
+    if (arguments.help) {
+        println(arguments.printHelp())
+        return
+    }
+
+    println("quiet=${arguments.quiet}")
+    println("rate=${arguments.rate}")
+    println("maxCount=${arguments.maxCount}")
+}
+
 class ExampleArgs(args: Array<String>) : TypedArgumentParser(args) {
 
     val quiet by BooleanArgument(self, "q",
