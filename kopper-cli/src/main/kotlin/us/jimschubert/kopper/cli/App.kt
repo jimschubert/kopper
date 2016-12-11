@@ -4,8 +4,8 @@ import us.jimschubert.kopper.*
 
 fun main(args: Array<String>) {
     val parser = Parser()
-    parser.name = "Kopper CLI"
-    parser.applicationDescription = "Kopper example application"
+    parser.setName("Kopper CLI")
+    parser.setApplicationDescription("Kopper example application")
 
     parser.flag("q", listOf("quiet", "silent"), description = "Run silently")
     parser.option("f", listOf("file"), description = "File name")

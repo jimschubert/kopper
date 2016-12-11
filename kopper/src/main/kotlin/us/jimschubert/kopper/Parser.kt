@@ -4,27 +4,48 @@ class Parser {
     private var options: MutableList<Option<*>> = mutableListOf()
     private var _args: MutableList<String> = mutableListOf()
 
-    var name: String? = null
-    var applicationDescription: String? = null
+    private var _name: String? = null
+    val name: String?
+        get() = _name
+
+    private var _applicationDescription: String? = null
+    val applicationDescription: String?
+        get() = _applicationDescription
 
     val remainingArgs: List<String> get() = _args.toList()
 
     fun option(shortOption: String,
                longOption: List<String> = listOf(),
                description: String? = null,
-               default: String? = null) {
+               default: String? = null): Parser {
         options.add(StringOption(shortOption, longOption, description, default))
+
+        return this
+    }
+
+    fun setName(name: String) : Parser {
+        _name = name
+        return this
+    }
+
+    fun setApplicationDescription(description: String) : Parser {
+        _applicationDescription = description
+        return this
     }
 
     fun flag(shortOption: String,
                longOption: List<String> = listOf(),
                description: String? = null,
-               default: Boolean? = true) {
+               default: Boolean? = true): Parser {
         options.add(BooleanOption(shortOption, longOption, description, default))
+
+        return this
     }
 
-    fun <T> custom(option: Option<T>) {
+    fun <T> custom(option: Option<T>): Parser {
         options.add(option)
+
+        return this
     }
 
     fun parse(args: Array<String>) {

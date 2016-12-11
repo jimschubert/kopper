@@ -10,13 +10,11 @@ class ParserTest {
     @BeforeMethod
     fun before(){
         parser = Parser()
-
-        parser.name = "Kopper"
-        parser.applicationDescription = "Kopper Tests"
-
-        parser.flag("q", listOf("quiet", "silent"), description = "Run silently")
-        parser.option("f", listOf("file"), description = "File name")
-        parser.flag("a", listOf("allowEmpty"))
+            .setName("Kopper")
+            .setApplicationDescription("Kopper Tests")
+            .flag("q", listOf("quiet", "silent"), description = "Run silently")
+            .option("f", listOf("file"), description = "File name")
+            .flag("a", listOf("allowEmpty"))
     }
 
     @Test
