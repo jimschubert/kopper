@@ -4,6 +4,9 @@ import us.jimschubert.kopper.StringOption
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * Delegates argument parsing of a string option
+ */
 class StringArgument(
         caller: TypedArgumentParser,
         val shortOption: String,
@@ -23,7 +26,6 @@ class StringArgument(
      * @return the property value.
      */
     override fun getValue(thisRef: TypedArgumentParser, property: KProperty<*>): String {
-        thisRef.ensureParsed()
-        return thisRef.parser.get(shortOption) ?: ""
+        return thisRef.ensureParsed().option(shortOption) ?: ""
     }
 }

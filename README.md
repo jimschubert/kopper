@@ -28,15 +28,15 @@ fun main(args: Array<String>) {
 
     println(parser.printHelp())
 
-    parser.parse(arrayOf("-f", "asdf.txt", "--quiet=true", "trailing", "arguments" ))
+    val arguments = parser.parse(arrayOf("-f", "asdf.txt", "--quiet=true", "trailing", "arguments" ))
 
-    println("q=${parser.isSet("q")}")
-    println("quiet=${parser.isSet("quiet")}")
-    println("silent=${parser.isSet("silent")}")
-    println("f=${parser.get("f")}")
-    println("file=${parser.get("file")}")
-    println("allowEmpty=${parser.isSet("allowEmpty")}")
-    println("remainingArgs=${parser.remainingArgs.joinToString()}")
+    println("q=${arguments.flag("q")}")
+    println("quiet=${arguments.flag("quiet")}")
+    println("silent=${arguments.flag("silent")}")
+    println("f=${arguments.option("f")}")
+    println("file=${arguments.option("file")}")
+    println("allowEmpty=${arguments.flag("allowEmpty")}")
+    println("unparsedArgs=${arguments.unparsedArgs.joinToString()}")
 }
 ```
 

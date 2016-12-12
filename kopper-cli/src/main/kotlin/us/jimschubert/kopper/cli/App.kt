@@ -12,18 +12,18 @@ fun main(args: Array<String>) {
     parser.flag("a", listOf("allowEmpty"))
     parser.flag("h", listOf("help"), description = "Displays this message")
 
-    parser.parse(arrayOf("-f", "asdf.txt", "--quiet=true", "trailing", "arguments" ))
+    val options = parser.parse(arrayOf("-f", "asdf.txt", "--quiet=true", "trailing", "arguments" ))
 
-    if(parser.isSet("h")) {
+    if(options.flag("h")) {
         println(parser.printHelp())
         return
     }
 
-    println("q=${parser.isSet("q")}")
-    println("quiet=${parser.isSet("quiet")}")
-    println("silent=${parser.isSet("silent")}")
-    println("f=${parser.get("f")}")
-    println("file=${parser.get("file")}")
-    println("allowEmpty=${parser.isSet("allowEmpty")}")
-    println("remainingArgs=${parser.remainingArgs.joinToString()}")
+    println("q=${options.flag("q")}")
+    println("quiet=${options.flag("quiet")}")
+    println("silent=${options.flag("silent")}")
+    println("f=${options.option("f")}")
+    println("file=${options.option("file")}")
+    println("allowEmpty=${options.flag("allowEmpty")}")
+    println("unparsedArgs=${options.unparsedArgs.joinToString()}")
 }

@@ -3,6 +3,9 @@ package us.jimschubert.kopper.typed
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * Delegates argument parsing of a boolean option
+ */
 class BooleanArgument(
         caller: TypedArgumentParser,
         val shortOption: String,
@@ -21,7 +24,6 @@ class BooleanArgument(
      * @return the property value.
      */
     override fun getValue(thisRef: TypedArgumentParser, property: KProperty<*>): Boolean {
-        thisRef.ensureParsed()
-        return thisRef.parser.isSet(shortOption)
+        return thisRef.ensureParsed().flag(shortOption)
     }
 }
