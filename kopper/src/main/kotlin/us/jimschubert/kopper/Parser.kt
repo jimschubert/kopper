@@ -1,18 +1,27 @@
 package us.jimschubert.kopper
 
+/**
+ * Defines how a set of command line options will be parsed into the arguments that were passed
+ */
 class Parser {
     private var options: MutableList<Option<*>> = mutableListOf()
     private var _args: MutableList<String> = mutableListOf()
 
     private var _name: String? = null
+
+    /**
+     * The name of the application
+     */
     val name: String?
         get() = _name
 
     private var _applicationDescription: String? = null
+
+    /**
+     * A description of the application
+     */
     val applicationDescription: String?
         get() = _applicationDescription
-
-    val remainingArgs: List<String> get() = _args.toList()
 
     fun option(shortOption: String,
                longOption: List<String> = listOf(),
@@ -23,16 +32,25 @@ class Parser {
         return this
     }
 
+    /**
+     * Sets the application name
+     */
     fun setName(name: String) : Parser {
         _name = name
         return this
     }
 
+    /**
+     * Sets the application description
+     */
     fun setApplicationDescription(description: String) : Parser {
         _applicationDescription = description
         return this
     }
 
+    /**
+     * Defines a flag/switch represented as a true or false value
+     */
     fun flag(shortOption: String,
                longOption: List<String> = listOf(),
                description: String? = null,
@@ -42,52 +60,80 @@ class Parser {
         return this
     }
 
+    /**
+     * Allows for defining custom options derived from [Option]
+     */
     fun <T> custom(option: Option<T>): Parser {
         options.add(option)
 
         return this
     }
 
-    fun parse(args: Array<String>) {
+    /**
+     * Parses input args into a collection of arguments with metadata about how those arguments were parsed.
+     */
+    fun parse(args: Array<String>): ArgumentCollection {
+        _args.clear()
+        val passedArguments : MutableList<Argument<*>> = mutableListOf()
         var argIndex = 0
+
         while(argIndex < args.size) {
             val s = args[argIndex]
 
             if(s.startsWith("--")) {
                 val (left,right) = s.removePrefix("--").kvp()
                 val option = options.find { it.longOption.contains(left) }
-                if(false == option?.isFlag)
+                val result = if(false == option?.isFlag) {
                     option?.applyParsedOption(right)
-                else
+                }
+                else {
                     option?.applyParsedOption(right)
+                }
+
+                if(option != null) {
+                    val usedArgs = if (right != null) listOf(left, right) else listOf(left)
+                    val prev = passedArguments.find { it.option == option }
+                    val current = Argument(result, option, usedArgs)
+                    if(prev != null) {
+                        passedArguments.remove(prev)
+                        passedArguments.add(prev + current)
+                    } else {
+                        passedArguments.add(current)
+                    }
+                }
             } else if (s.startsWith("-")) {
                 val next = if(argIndex < (args.size-1)) args[argIndex+1] else null
                 val option = options.find { it.shortOption == s.removePrefix("-")}
-                if(false == next?.startsWith("-")) {
-                    option?.applyParsedOption(next)
+                val hasFollowingOption = next?.startsWith("-")
+                val result = if(false == hasFollowingOption) {
                     argIndex++
-                } else if (option != null) {
+                    option?.applyParsedOption(next)
+                } else {
                     option?.setAsDefault()
+                }
+
+                if(option != null) {
+                    val usedArgs = if(false == hasFollowingOption) listOf<String>(next!!) else listOf<String>()
+                    val prev = passedArguments.find { it.option == option }
+                    val current = Argument(result, option, usedArgs)
+                    if(prev != null) {
+                        passedArguments.remove(prev)
+                        passedArguments.add(prev + current)
+                    } else {
+                        passedArguments.add(current)
+                    }
                 }
             } else _args.add(s)
 
             argIndex++
         }
+
+        return ArgumentCollection(_args.toList(), passedArguments)
     }
 
-    fun get(option: String): String? {
-        val found = options.find { (it.shortOption == option || it.longOption.contains(option)) }
-        return found?.actual as? String?
-    }
-
-    fun isSet(option: String): Boolean {
-        val found = options.find {
-            it.isFlag && (it.shortOption == option || it.longOption.contains(option))
-        } as? BooleanOption ?: return false
-
-        return found.actual ?: false
-    }
-
+    /**
+     * Provides a formatted string for printing a help message to a user.
+     */
     fun printHelp(): String {
         val buffer = StringBuffer()
         if(name != null) {

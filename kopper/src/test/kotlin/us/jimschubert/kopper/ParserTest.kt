@@ -24,11 +24,11 @@ class ParserTest {
         val args = arrayOf("-f", filename)
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.get("f"), filename)
-        assertEquals(parser.get("file"), filename)
+        assertEquals(arguments.option("f"), filename)
+        assertEquals(arguments.option("file"), filename)
     }
 
     @Test
@@ -37,11 +37,11 @@ class ParserTest {
         val args = arrayOf("-f")
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.get("f"), null)
-        assertEquals(parser.get("file"), null)
+        assertEquals(arguments.option("f"), null)
+        assertEquals(arguments.option("file"), null)
     }
 
     @Test
@@ -50,11 +50,11 @@ class ParserTest {
         val args = arrayOf("--file=")
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.get("f"), null)
-        assertEquals(parser.get("file"), null)
+        assertEquals(arguments.option("f"), null)
+        assertEquals(arguments.option("file"), null)
     }
 
     @Test
@@ -63,12 +63,12 @@ class ParserTest {
         val args = arrayOf("-q")
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.isSet("q"), true)
-        assertEquals(parser.isSet("quiet"), true)
-        assertEquals(parser.isSet("silent"), true)
+        assertEquals(arguments.flag("q"), true)
+        assertEquals(arguments.flag("quiet"), true)
+        assertEquals(arguments.flag("silent"), true)
     }
 
     @Test
@@ -77,12 +77,12 @@ class ParserTest {
         val args = arrayOf("--quiet")
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.isSet("q"), true)
-        assertEquals(parser.isSet("quiet"), true)
-        assertEquals(parser.isSet("silent"), true)
+        assertEquals(arguments.flag("q"), true)
+        assertEquals(arguments.flag("quiet"), true)
+        assertEquals(arguments.flag("silent"), true)
     }
 
     @Test
@@ -91,12 +91,12 @@ class ParserTest {
         val args = arrayOf("--quiet", "--silent=false")
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.isSet("q"), false)
-        assertEquals(parser.isSet("quiet"), false)
-        assertEquals(parser.isSet("silent"), false)
+        assertEquals(arguments.flag("q"), false)
+        assertEquals(arguments.flag("quiet"), false)
+        assertEquals(arguments.flag("silent"), false)
     }
 
     @Test
@@ -106,16 +106,16 @@ class ParserTest {
         val args = arrayOf("-f", "asdf.txt", "--quiet=true", "--allowEmpty=false", "trailing", "arguments" )
 
         // Act
-        parser.parse(args)
+        val arguments = parser.parse(args)
 
         // Assert
-        assertEquals(parser.get("f"), filename)
-        assertEquals(parser.get("file"), filename)
-        assertEquals(parser.isSet("q"), true)
-        assertEquals(parser.isSet("quiet"), true)
-        assertEquals(parser.isSet("silent"), true)
-        assertEquals(parser.isSet("a"), false)
-        assertEquals(parser.isSet("allowEmpty"), false)
-        assertEquals(parser.remainingArgs, listOf("trailing", "arguments"))
+        assertEquals(arguments.option("f"), filename)
+        assertEquals(arguments.option("file"), filename)
+        assertEquals(arguments.flag("q"), true)
+        assertEquals(arguments.flag("quiet"), true)
+        assertEquals(arguments.flag("silent"), true)
+        assertEquals(arguments.flag("a"), false)
+        assertEquals(arguments.flag("allowEmpty"), false)
+        assertEquals(arguments.unparsedArgs, listOf("trailing", "arguments"))
     }
 }

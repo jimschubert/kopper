@@ -1,5 +1,8 @@
 package us.jimschubert.kopper
 
+/**
+ * A generic representation of a command line option
+ */
 abstract class Option<T>(
         open val shortOption: String,
         open val longOption: List<String> = listOf(),
@@ -44,15 +47,20 @@ abstract class Option<T>(
         return (value as? T?) ?: default
     }
 
-    internal fun applyParsedOption(value: String?): Unit {
+    internal fun applyParsedOption(value: String?): T? {
         actual = parseOption(value)
+        return actual
     }
 
-    internal fun setAsDefault() {
+    internal fun setAsDefault(): T? {
         this.actual = this.default
+        return this.actual
     }
 }
 
+/**
+ * A command line option represented as a string
+ */
 class StringOption(
         override val shortOption: String,
         override val longOption: List<String> = listOf(),
@@ -67,6 +75,9 @@ class StringOption(
         false
 )
 
+/**
+ * A command line option represented as a true/false value
+ */
 class BooleanOption(
         override val shortOption: String,
         override val longOption: List<String> = listOf(),
