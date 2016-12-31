@@ -4,9 +4,28 @@ import org.testng.annotations.Test
 
 import org.testng.Assert.*
 import org.testng.annotations.BeforeMethod
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
+import java.io.StringWriter
 
 class ParserTest {
     var parser = Parser()
+
+    val TAB = '\t'
+    val help = """
+            .NAME
+            .${TAB}Kopper: Kopper Tests
+            .
+            .OPTIONS
+            .${TAB}-q, --quiet, --silent
+            .${TAB}${TAB}Run silently
+            .
+            .${TAB}-f value, --file=value
+            .${TAB}${TAB}File name
+            .
+            .${TAB}-a, --allowEmpty
+        """.trimMargin(".")
+
     @BeforeMethod
     fun before(){
         parser = Parser()
@@ -117,5 +136,32 @@ class ParserTest {
         assertEquals(arguments.flag("a"), false)
         assertEquals(arguments.flag("allowEmpty"), false)
         assertEquals(arguments.unparsedArgs, listOf("trailing", "arguments"))
+    }
+
+    @Test
+    fun `print help`(){
+        // Arrange
+        val expected = help
+
+        // Act
+        val result = parser.printHelp().trim()
+
+        // Assert
+        assertEquals(result, expected)
+    }
+
+    @Test
+    fun `print help to PrintStream`(){
+        // Arrange
+        val expected = help
+        val writer = ByteArrayOutputStream()
+        val printStream = PrintStream(writer)
+
+        // Act
+        parser.printHelp(printStream)
+        val result = String(writer.toByteArray(), Charsets.UTF_8).trim()
+
+        // Assert
+        assertEquals(result, expected)
     }
 }

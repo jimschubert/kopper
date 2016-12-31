@@ -2,6 +2,7 @@ package us.jimschubert.kopper.typed
 
 import us.jimschubert.kopper.ArgumentCollection
 import us.jimschubert.kopper.Parser
+import java.io.PrintStream
 
 /**
  * A base type for object-oriented argument parsing.
@@ -19,9 +20,9 @@ abstract class TypedArgumentParser(val args: Array<String>) {
         return arguments!!
     }
 
-    fun printHelp() : String {
-        return parser.printHelp()
-    }
+    fun printHelp() : String = parser.printHelp()
+
+    fun printHelp(out: PrintStream) = parser.printHelp(out)
 
     val _etc_: List<String> get() {
         return ensureParsed().unparsedArgs

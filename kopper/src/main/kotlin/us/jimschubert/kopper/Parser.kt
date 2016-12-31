@@ -1,5 +1,7 @@
 package us.jimschubert.kopper
 
+import java.io.PrintStream
+
 /**
  * Defines how a set of command line options will be parsed into the arguments that were passed
  */
@@ -157,5 +159,13 @@ class Parser {
         }
 
         return buffer.toString()
+    }
+
+    /**
+     * Provides a formatted string for printing a help message to a user.
+     */
+    fun printHelp(out: PrintStream) {
+        val help = printHelp()
+        out.write(help.toByteArray())
     }
 }

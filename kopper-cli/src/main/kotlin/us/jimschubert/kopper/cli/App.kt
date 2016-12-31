@@ -14,10 +14,7 @@ fun main(args: Array<String>) {
 
     val options = parser.parse(arrayOf("-f", "asdf.txt", "--quiet=true", "trailing", "arguments" ))
 
-    if(options.flag("h")) {
-        println(parser.printHelp())
-        return
-    }
+    if(options.flag("h")) return parser.printHelp(System.out)
 
     println("q=${options.flag("q")}")
     println("quiet=${options.flag("quiet")}")

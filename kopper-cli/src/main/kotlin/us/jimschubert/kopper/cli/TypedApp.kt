@@ -16,10 +16,7 @@ fun main(args: Array<String>) {
                     "arguments")
     )
 
-    if (arguments.help) {
-        println(arguments.printHelp())
-        return
-    }
+    if (arguments.help) return arguments.printHelp(System.out)
 
     println("quiet=${arguments.quiet}")
     println("file=${arguments.file}")
