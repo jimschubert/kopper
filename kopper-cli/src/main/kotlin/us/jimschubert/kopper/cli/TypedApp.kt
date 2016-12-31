@@ -28,7 +28,7 @@ fun main(args: Array<String>) {
     }
 }
 
-class TypedArgs(args: Array<String>) : TypedArgumentParser(args) {
+class TypedArgs(args: Array<String>) : TypedArgumentParser(args, "TypedApp", "Example Typed Arguments Application") {
     val quiet by BooleanArgument(self, "q",
             default = true,
             longOption = listOf("quiet", "silent"),
