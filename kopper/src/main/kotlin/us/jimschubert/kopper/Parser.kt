@@ -76,7 +76,7 @@ class Parser {
      */
     fun parse(args: Array<String>): ArgumentCollection {
         _args.clear()
-        val passedArguments : MutableList<Argument<*>> = mutableListOf()
+        val arguments : MutableList<Argument<*>> = mutableListOf()
         var argIndex = 0
 
         while(argIndex < args.size) {
@@ -94,13 +94,13 @@ class Parser {
 
                 if(option != null) {
                     val usedArgs = if (right != null) listOf(left, right) else listOf(left)
-                    val prev = passedArguments.find { it.option == option }
+                    val prev = arguments.find { it.option == option }
                     val current = Argument(result, option, usedArgs)
                     if(prev != null) {
-                        passedArguments.remove(prev)
-                        passedArguments.add(prev + current)
+                        arguments.remove(prev)
+                        arguments.add(prev + current)
                     } else {
-                        passedArguments.add(current)
+                        arguments.add(current)
                     }
                 }
             } else if (s.startsWith("-")) {
@@ -116,13 +116,13 @@ class Parser {
 
                 if(option != null) {
                     val usedArgs = if(false == hasFollowingOption) listOf<String>(next!!) else listOf<String>()
-                    val prev = passedArguments.find { it.option == option }
+                    val prev = arguments.find { it.option == option }
                     val current = Argument(result, option, usedArgs)
                     if(prev != null) {
-                        passedArguments.remove(prev)
-                        passedArguments.add(prev + current)
+                        arguments.remove(prev)
+                        arguments.add(prev + current)
                     } else {
-                        passedArguments.add(current)
+                        arguments.add(current)
                     }
                 }
             } else _args.add(s)
@@ -130,7 +130,16 @@ class Parser {
             argIndex++
         }
 
-        return ArgumentCollection(_args.toList(), passedArguments)
+        val explicitOptions = arguments.map { it.option }
+        val undeclaredOptions = options.filterNot {
+            it in explicitOptions
+        }
+
+        undeclaredOptions.forEach {
+            arguments.add(Argument(it.default, it))
+        }
+
+        return ArgumentCollection(_args.toList(), arguments)
     }
 
     /**

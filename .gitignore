@@ -1,7 +1,8 @@
 build/
 # Created by https://www.gitignore.io/api/java,kotlin,linux,osx
 
-#!! ERROR: kotlin is undefined. Use list command to see defined gitignore types !!#
+*.iml
+**/out/
 
 ### Linux ###
 *~
